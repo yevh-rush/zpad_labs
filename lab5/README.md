@@ -43,7 +43,7 @@
 
 3.  **Встановлення бібліотек:**
     ```bash
-    pip install streamlit pandas matplotlib
+    pip install streamlit pandas matplotlib plotly
     ```
     *(Або скористайтеся файлом requirements.txt: `pip install -r requirements.txt`)*
 
