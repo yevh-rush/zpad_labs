@@ -32,28 +32,21 @@ def load_data(folder_path="data"):
         parsed_data = []
         
         for line in lines:
-            # Знаходимо номер області
             if 'Province=' in line:
                 match = re.search(r'Province=\s*(\d+)', line)
                 if match:
                     prov_id = int(match.group(1))
             
-            # Вирізаємо будь-які HTML-теги (<tt>, <pre>, <br>) та зайві пробіли
             clean_line = re.sub(r'<[^>]+>', '', line).strip()
             
-            # Розбиваємо рядок по комаху і прибираємо пусті елементи (це вирішує проблему зайвої коми в кінці)
             parts = [p.strip() for p in clean_line.split(',') if p.strip()]
             
-            # Якщо рядок починається з цифри (наприклад, 1982) і має достатньо колонок
             if len(parts) >= 7 and parts[0].isdigit():
-                # Беремо рівно 7 значень: year, week, smn, smt, vci, tci, vhi
                 parsed_data.append(parts[:7])
         
-        # Якщо дані знайшлися, збираємо їх у датафрейм
         if parsed_data:
             df = pd.DataFrame(parsed_data, columns=['YEAR', 'WEEK', 'SMN', 'SMT', 'VCI', 'TCI', 'VHI'])
             
-            # Перетворюємо рядки у числа
             for col in df.columns:
                 df[col] = pd.to_numeric(df[col], errors='coerce')
                 
@@ -67,7 +60,6 @@ def load_data(folder_path="data"):
         
     full_df = pd.concat(df_list, ignore_index=True)
     
-    # Видаляємо пусті значення та фільтруємо системні -1
     full_df = full_df.dropna(subset=['VCI', 'TCI', 'VHI', 'YEAR', 'WEEK'])
     full_df = full_df[full_df['VHI'] > 0]
     
