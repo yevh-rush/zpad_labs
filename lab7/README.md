@@ -21,6 +21,10 @@
 
 ## Встановлення залежностей
 ```bash
+chmod +x *.sh
+```
+
+```bash
 ./preinstall.sh
 ```
 
